@@ -106,7 +106,7 @@ public class GbaRomDumper {
     
     boolean checkStartFlag(byte value)
     {
-        String startToken = "***START DUMP***";
+        String startToken = "<CMD:START_DUMP>";
         
         token += (char) value;
         if (token.length() > startToken.length()) {
