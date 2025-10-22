@@ -83,11 +83,11 @@ void loop()
     }
   }
 
-  if(command.equals("<CMD:GET_HEADER>")) {
+  if(command.equals("<CMD:DUMP_HEADER>")) {
     dumpNonSequential(0x0000, 0x00C0 - 2);
   }
 
-  else if(command.equals("<CMD:GET_ALL>")) {
+  else if(command.equals("<CMD:DUMP_ALL>")) {
     dumpNonSequential(0x0000, 0xFFFE - 2);
     dumpSequential(0xFFFE, 0xFFFFFF);
   }
