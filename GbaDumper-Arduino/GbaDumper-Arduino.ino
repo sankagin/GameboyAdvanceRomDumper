@@ -52,6 +52,9 @@ int cs = 13;
 // propagation delay time
 int globalWait = 5;
 
+// command from UART 
+String command = "";
+
 void setup()
 {
   pinMode(cs, OUTPUT);
@@ -60,16 +63,41 @@ void setup()
   delay(10);
   
   Serial.println("");
-  Serial.print("<CMD:START_DUMP>");
+  Serial.print("<STATUS:READY>");
+
   delay(10);
 }
 
 void loop()
 {
-  dumpNonSequential(0x0000, 0xFFFE - 2);
-  dumpSequential(0xFFFE, 0xFFFFFF);
-  //dumpSequential(0x0000, 0xFFFFFF);
-  halt();
+  while(1) {
+    if(0 >= Serial.available()) {
+      continue;
+    }
+
+    char c = Serial.read();
+    command += c;
+
+    if('>' == c) {
+      break;
+    }
+  }
+
+  if(command.equals("<CMD:GET_HEADER>")) {
+    dumpNonSequential(0x0000, 0x00C0 - 2);
+  }
+
+  else if(command.equals("<CMD:GET_ALL>")) {
+    dumpNonSequential(0x0000, 0xFFFE - 2);
+    dumpSequential(0xFFFE, 0xFFFFFF);
+  }
+
+  command = "";
+
+  // dumpNonSequential(0x0000, 0xFFFE - 2);
+  // dumpSequential(0xFFFE, 0xFFFFFF);
+  // //dumpSequential(0x0000, 0xFFFFFF);
+  // halt();
 }
 
 // we use long data type becouse Arduino Uno int is only 16 bit and we need
