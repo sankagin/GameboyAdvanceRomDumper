@@ -26,9 +26,6 @@ public class GbaRomDumper {
         Scanner scanner = new Scanner(System.in);
         
         System.out.println("Arduino GBA Rom Dumper (Version 0.9)");
-        System.out.println("Enter name of rom/dump: ");
-        String romTitle = scanner.nextLine();
-        System.out.println("");
         
         System.out.println("Select serial port");
         SerialPort[] serialPorts = SerialPort.getCommPorts();
@@ -39,10 +36,33 @@ public class GbaRomDumper {
         System.out.println("Enter number: ");
         int portIndex = Integer.parseInt(scanner.nextLine()) - 1;
         System.out.println("");
-        
-        gbaRomDumper.setRomTitle("/" + romTitle + ".gba");
-        gbaRomDumper.setPortIndex(portIndex);
-        gbaRomDumper.dump();
+
+        while(true) {
+            System.out.println("Select command");
+            System.out.println("1:Check header");
+            System.out.println("2:Dump");
+            System.out.println("Enter number: ");
+
+            int command = Integer.parseInt(scanner.nextLine());
+            System.out.println(command);
+
+            switch (command) {
+                case 1:
+                    // todo: write header viewer
+                    break;
+                case 2:
+                    System.out.println("Enter name of rom/dump: ");
+                    String romTitle = scanner.nextLine();
+                    System.out.println("");
+
+                    gbaRomDumper.setRomTitle("/" + romTitle + ".gba");
+                    gbaRomDumper.setPortIndex(portIndex);
+                    gbaRomDumper.dump();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
  
     public void setRomTitle(String romTitle)
